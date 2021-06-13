@@ -476,6 +476,9 @@ void processing_conf_file()
         if (line.size() == 0) {
             continue;
         }
+        if (line.at(0) == '#') {
+            continue;
+        }
         second = line.find_first_of('=', first);
         //first has index of start of token
         //second has index of end of token + 1;
@@ -484,14 +487,13 @@ void processing_conf_file()
         }
         param = line.substr(first, second - first);
         if (second == line.size()) {
+            daemon_error_exit("Wrong option: %s\n", line.c_str());
+        } else if (second == line.size() - 1) {
             value = "";
         } else {
             value = line.substr(second + 1, line.size() - second);
         }
-        if (param.at(0) == '#') {
-            continue;
-        }
-        if ((value.at(0) == '"') && (value.at(value.size() - 1) == '"')) {
+        if ((value != "") && (value.at(0) == '"') && (value.at(value.size() - 1) == '"')) {
             value = value.substr(1, value.size() - 2);
         }
 //        fprintf(stderr, "%s: %s\n", param.c_str(), value.c_str());
@@ -586,6 +588,8 @@ void processing_conf_file()
         } else if (param == "move_preset") {
             if( !service_ctx.get_ptz_node()->set_move_preset(value.c_str()) )
                 daemon_error_exit("Can't set process for goto preset movement: %s\n", service_ctx.get_ptz_node()->get_cstr_err());
+        } else {
+            daemon_error_exit("Unrecognized option: %s\n", line);
         }
     }
 }
