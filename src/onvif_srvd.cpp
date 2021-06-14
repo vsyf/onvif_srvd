@@ -589,7 +589,7 @@ void processing_conf_file()
             if( !service_ctx.get_ptz_node()->set_move_preset(value.c_str()) )
                 daemon_error_exit("Can't set process for goto preset movement: %s\n", service_ctx.get_ptz_node()->get_cstr_err());
         } else {
-            daemon_error_exit("Unrecognized option: %s\n", line);
+            daemon_error_exit("Unrecognized option: %s\n", line.c_str());
         }
     }
 }
