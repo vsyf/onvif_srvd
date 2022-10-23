@@ -86,7 +86,7 @@ SOAP_SERVICE_SRC = $(GENERATED_DIR)/soapDeviceBindingService.cpp \
 # Add your source files to the list.
 # Supported *.c  *.cpp  *.S files.
 # For other file types write a template rule for build, see below.
-SOURCES  = $(COMMON_DIR)/daemon.c                 \
+SOURCES  = $(COMMON_DIR)/daemon.cc                \
            $(COMMON_DIR)/$(DAEMON_NAME).cpp       \
            $(COMMON_DIR)/eth_dev_param.cpp        \
            $(COMMON_DIR)/ServiceContext.cpp       \
