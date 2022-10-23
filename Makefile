@@ -8,7 +8,7 @@ DAEMON_NO_CHDIR       = 1
 DAEMON_NO_CLOSE_STDIO = 0
 
 
-GSOAP_VERSION     = 2.8.92
+GSOAP_VERSION     = 2.8.123
 GSOAP_INSTALL_DIR = ./gsoap-2.8
 GSOAP_DIR         = $(GSOAP_INSTALL_DIR)/gsoap
 GSOAP_CUSTOM_DIR  = $(GSOAP_DIR)/custom
@@ -56,7 +56,8 @@ CXXFLAGS        += -DWITH_OPENSSL -lssl -lcrypto -lz
 WSSE_SOURCES     = $(GSOAP_PLUGIN_DIR)/wsseapi.c \
                    $(GSOAP_PLUGIN_DIR)/mecevp.c  \
                    $(GSOAP_PLUGIN_DIR)/smdevp.c  \
-                   $(GSOAP_PLUGIN_DIR)/wsaapi.c
+                   $(GSOAP_PLUGIN_DIR)/wsaapi.c  \
+                   $(GSOAP_CUSTOM_DIR)/struct_timeval.c
 
 WSSE_IMPORT      = echo '\#import "wsse.h" ' >> $@
 else
@@ -249,7 +250,7 @@ endef
 
 define build_bin
     @$(BUILD_ECHO)
-    $(CXX)  $1 -o $@  $(CXXFLAGS)
+    $(CXX)  $1 -o $@  $(CXXFLAGS) $(LDFLAGS)
     @echo "\n---- Compiled $@ ver $(DAEMON_MAJOR_VERSION).$(DAEMON_MINOR_VERSION).$(DAEMON_PATCH_VERSION) ----\n"
 endef
 
@@ -260,7 +261,7 @@ define build_gsoap
     # get archive
     if [ ! -f SDK/gsoap.zip ]; then \
         mkdir -p SDK; \
-        wget -O ./SDK/gsoap.zip.tmp "https://sourceforge.net/projects/gsoap2/files/gsoap-2.8/gsoap_$(GSOAP_VERSION).zip/download"   || \
+        wget -O ./SDK/gsoap.zip.tmp "https://sourceforge.net/projects/gsoap2/files/gsoap_$(GSOAP_VERSION).zip/download"   || \
         wget -O ./SDK/gsoap.zip.tmp "https://sourceforge.net/projects/gsoap2/files/oldreleases/gsoap_$(GSOAP_VERSION).zip/download" || \
         wget -O ./SDK/gsoap.zip.tmp "https://master.dl.sourceforge.net/project/gsoap2/oldreleases/gsoap_$(GSOAP_VERSION).zip"       && \
         mv ./SDK/gsoap.zip.tmp ./SDK/gsoap.zip; \
